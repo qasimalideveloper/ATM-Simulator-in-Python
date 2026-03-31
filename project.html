@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Document</title>
+     <script src="es6-shim.js"></script>
+     <script src="websdk.client.bundle.min.js"></script>
+     <script src="fingerprint.sdk.min.js"></script>
+     <script src="Uzimetric.js"></script>
+   
+</head>
+<body>
+     
+<script>
+let fingerdata;
+let fingerScanner = new FingerApi((sample) => {
+
+console.log("Detected a Fingerprint.")
+
+fingerScanner.stopCapture()
+
+fingerdata = fingerScanner.process(sample)
+
+// Create a blob from the text content
+const blob = new Blob([fingerdata], { type: 'text/plain' });
+
+// Create a link element
+const a = document.createElement('a');
+a.href = window.URL.createObjectURL(blob);
+a.download = 't.txt';
+
+// Trigger a click event to automatically download the file
+a.style.display = 'none';
+document.body.appendChild(a);
+a.click();
+
+// Clean up
+window.URL.revokeObjectURL(a.href);
+document.body.removeChild(a);
+
+
+});
+
+
+
+  
+fingerScanner.startCapture(() => {
+     console.log("Scan your fingerprint")
+})
+
+     
+
+
+
+
+</script>
+
+</body>
+</html>
